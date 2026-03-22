@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ระบบขออนุญาตออกนอกโรงเรียน</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #e3f2fd, #f9fbff);
+      color: #222;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    h1, h2 {
+      margin-top: 0;
+      color: #1565c0;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cfd8dc;
+      border-radius: 12px;
+      font-size: 15px;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #2196f3;
+      box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.15);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-primary {
+      background: #1976d2;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #125ca8;
+    }
+
+    .btn-danger {
+      background: #e53935;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #c62828;
+    }
+
+    .success {
+      margin-top: 12px;
+      color: #2e7d32;
+      font-weight: 600;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #e0e0e0;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #1976d2;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background: #f7fbff;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .pending {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .approved {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .rejected {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .small-btn {
+      padding: 8px 10px;
+      font-size: 13px;
+      margin: 2px;
+      border-radius: 8px;
+    }
+
+    .approve-btn {
+      background: #2e7d32;
+      color: white;
+    }
+
+    .reject-btn {
+      background: #d32f2f;
+      color: white;
+    }
+
+    .delete-btn {
+      background: #616161;
+      color: white;
+    }
+
+    .empty {
+      color: #777;
+      text-align: center;
+      padding: 20px;
+    }
+
+    @media (max-width: 700px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      thead {
+        display: none;
+      }
+
+      tr {
+        background: white;
+        margin-bottom: 14px;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        padding: 10px;
+      }
+
+      td {
+        border: none;
+        padding: 8px 4px;
+      }
+
+      td::before {
+        content: attr(data-label);
+        display: block;
+        font-weight: bold;
+        color: #1565c0;
+        margin-bottom: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>ระบบขออนุญาตออกนอกโรงเรียน</h1>
+      <p class="subtitle">กรอกข้อมูลเพื่อส่งคำขออนุญาตออกนอกโรงเรียน</p>
+
+      <form id="leaveForm">
+        <div>
+          <label for="studentName">ชื่อ-นามสกุล</label>
+          <input type="text" id="studentName" required />
+        </div>
+
+        <div>
+          <label for="classRoom">ชั้น / ห้อง</label>
+          <input type="text" id="classRoom" placeholder="เช่น ม.5/2" required />
+        </div>
+
+        <div>
+          <label for="studentNo">เลขที่</label>
+          <input type="number" id="studentNo" required />
+        </div>
+
+        <div>
+          <label for="leaveDate">วันที่</label>
+          <input type="date" id="leaveDate" required />
+        </div>
+
+        <div>
+          <label for="leaveTime">เวลาออก</label>
+          <input type="time" id="leaveTime" required />
+        </div>
+
+        <div>
+          <label for="destination">สถานที่ที่จะไป</label>
+          <input type="text" id="destination" required />
+        </div>
+
+        <div>
+          <label for="parentPhone">เบอร์ผู้ปกครอง</label>
+          <input type="tel" id="parentPhone" placeholder="08xxxxxxxx" required />
+        </div>
+
+        <div>
+          <label for="reasonType">ประเภทเหตุผล</label>
+          <select id="reasonType" required>
+            <option value="">-- เลือกประเภทเหตุผล --</option>
+            <option value="ป่วย">ป่วย</option>
+            <option value="ธุระส่วนตัว">ธุระส่วนตัว</option>
+            <option value="พบแพทย์">พบแพทย์</option>
+            <option value="เหตุฉุกเฉิน">เหตุฉุกเฉิน</option>
+            <option value="อื่น ๆ">อื่น ๆ</option>
+          </select>
+        </div>
+
+        <div class="full">
+          <label for="reasonDetail">รายละเอียดเหตุผล</label>
+          <textarea id="reasonDetail" placeholder="กรอกรายละเอียดเพิ่มเติม..." required></textarea>
+        </div>
+
+        <div class="full btn-group">
+          <button type="submit" class="btn-primary">ส่งคำขอ</button>
+          <button type="reset" class="btn-danger">ล้างข้อมูล</button>
+        </div>
+
+        <div class="full success" id="message"></div>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>รายการคำขออนุญาต</h2>
+      <div id="requestTable"></div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("leaveForm");
+    const requestTable = document.getElementById("requestTable");
+    const message = document.getElementById("message");
+
+    let requests = JSON.parse(localStorage.getItem("leaveRequests")) || [];
+
+    function saveToLocalStorage() {
+      localStorage.setItem("leaveRequests", JSON.stringify(requests));
+    }
+
+    function renderTable() {
+      if (requests.length === 0) {
+        requestTable.innerHTML = '<div class="empty">ยังไม่มีคำขอ</div>';
+        return;
+      }
+
+      let html = `
+        <table>
+          <thead>
+            <tr>
+              <th>ชื่อ</th>
+              <th>ชั้น</th>
+              <th>เลขที่</th>
+              <th>วัน/เวลา</th>
+              <th>สถานที่</th>
+              <th>เหตุผล</th>
+              <th>เบอร์ผู้ปกครอง</th>
+              <th>สถานะ</th>
+              <th>จัดการ</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      requests.forEach((item, index) => {
+        html += `
+          <tr>
+            <td data-label="ชื่อ">${item.studentName}</td>
+            <td data-label="ชั้น">${item.classRoom}</td>
+            <td data-label="เลขที่">${item.studentNo}</td>
+            <td data-label="วัน/เวลา">${item.leaveDate}<br>${item.leaveTime}</td>
+            <td data-label="สถานที่">${item.destination}</td>
+            <td data-label="เหตุผล">
+              <strong>${item.reasonType}</strong><br>
+              ${item.reasonDetail}
+            </td>
+            <td data-label="เบอร์ผู้ปกครอง">${item.parentPhone}</td>
+            <td data-label="สถานะ">
+              <span class="status ${getStatusClass(item.status)}">${item.status}</span>
+            </td>
+            <td data-label="จัดการ">
+              <button class="small-btn approve-btn" onclick="updateStatus(${index}, 'อนุมัติ')">อนุมัติ</button>
+              <button class="small-btn reject-btn" onclick="updateStatus(${index}, 'ไม่อนุมัติ')">ไม่อนุมัติ</button>
+              <button class="small-btn delete-btn" onclick="deleteRequest(${index})">ลบ</button>
+            </td>
+          </tr>
+        `;
+      });
+
+      html += `</tbody></table>`;
+      requestTable.innerHTML = html;
+    }
+
+    function getStatusClass(status) {
+      if (status === "รออนุมัติ") return "pending";
+      if (status === "อนุมัติ") return "approved";
+      if (status === "ไม่อนุมัติ") return "rejected";
+      return "";
+    }
+
+    function updateStatus(index, newStatus) {
+      requests[index].status = newStatus;
+      saveToLocalStorage();
+      renderTable();
+    }
+
+    function deleteRequest(index) {
+      if (confirm("คุณต้องการลบคำขอนี้หรือไม่?")) {
+        requests.splice(index, 1);
+        saveToLocalStorage();
+        renderTable();
+      }
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const newRequest = {
+        studentName: document.getElementById("studentName").value.trim(),
+        classRoom: document.getElementById("classRoom").value.trim(),
+        studentNo: document.getElementById("studentNo").value.trim(),
+        leaveDate: document.getElementById("leaveDate").value,
+        leaveTime: document.getElementById("leaveTime").value,
+        destination: document.getElementById("destination").value.trim(),
+        parentPhone: document.getElementById("parentPhone").value.trim(),
+        reasonType: document.getElementById("reasonType").value,
+        reasonDetail: document.getElementById("reasonDetail").value.trim(),
+        status: "รออนุมัติ"
+      };
+
+      requests.push(newRequest);
+      saveToLocalStorage();
+      renderTable();
+
+      message.textContent = "ส่งคำขอเรียบร้อยแล้ว";
+      form.reset();
+
+      setTimeout(() => {
+        message.textContent = "";
+      }, 2500);
+    });
+
+    renderTable();
+  </script>
+</body>
+</html>
